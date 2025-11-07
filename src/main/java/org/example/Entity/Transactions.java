@@ -2,6 +2,7 @@ package org.example.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.example.Entity.Category;
 
 import java.math.BigDecimal;
 
@@ -17,5 +18,9 @@ public class Transactions {
 
     @Column(length = 100, nullable = false)
     public String description;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Category category;
 
 }
