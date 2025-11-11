@@ -1,8 +1,8 @@
 package org.example.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.example.Entity.Category;
 
 import java.math.BigDecimal;
 
@@ -16,11 +16,12 @@ public class Transactions {
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal valor;
 
-    @Column(length = 100, nullable = false)
+    @Column(nullable = false, length = 50)
     public String description;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JsonManagedReference
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
 }
