@@ -1,7 +1,7 @@
-package org.example.Controller;
+package org.example.controller;
 
-import org.example.Entity.Transactions;
-import org.example.Repository.TransactionsRepository;
+import org.example.entity.Transactions;
+import org.example.repository.TransactionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +24,6 @@ public class TransactionsControl {
     @GetMapping
     public ResponseEntity <List<Transactions>> listar(){
         List<Transactions> transactions = transactionsRepository.findAll();
-        return ResponseEntity.status(200).body(transactions);
+        return ResponseEntity.ok(transactions);
     }
 }
