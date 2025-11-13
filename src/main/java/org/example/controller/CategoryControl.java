@@ -30,17 +30,15 @@ public class CategoryControl {
 
     @GetMapping("/{id}")
     public ResponseEntity <Category> busca(Long id){
-        Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
+        Category category = categoryRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Category not found"));
+        return ResponseEntity.ok(category);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id){
-        if (!categoryRepository.existsById(id)){
-            return ResponseEntity.notFound().build();
-        }
-
-        categoryRepository.deleteById(id);
+        Category category = categoryRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Category not found to delete"));
         return ResponseEntity.noContent().build();
     }
-
 }
