@@ -29,7 +29,7 @@ public class CategoryControl {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity <Category> busca(Long id){
+    public ResponseEntity <Category> busca(@PathVariable Long id){
         Category category = categoryRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Category not found"));
         return ResponseEntity.ok(category);
@@ -39,6 +39,7 @@ public class CategoryControl {
     public ResponseEntity<Void> deletar(@PathVariable Long id){
         Category category = categoryRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Category not found to delete"));
+        categoryRepository.delete(category);
         return ResponseEntity.noContent().build();
     }
 }
