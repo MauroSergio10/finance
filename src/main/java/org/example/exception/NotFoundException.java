@@ -3,6 +3,6 @@ package org.example.exception;
 public class NotFoundException extends CustomException{
 
     public NotFoundException(String message){
-        super("NOT_FOUND", message);
+        super(message, "404");
     }
 }

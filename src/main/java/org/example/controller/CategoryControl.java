@@ -2,24 +2,25 @@ package org.example.controller;
 
 import org.example.entity.Category;
 import org.example.exception.NotFoundException;
-import org.example.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/category")
 public class CategoryControl {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
+
+    CategoryControl(CategoryService categoryService){
+        this.categoryService = categoryService;
+    }
 
     @PostMapping
     public ResponseEntity<Category> create(@RequestBody Category category){
-        Category salvar = categoryRepository.save(category);
-        return ResponseEntity.status(200).body(salvar);
+        Category salvar = categoryService.create(category);
+        return ResponseEntity.ok(salvar);
     }
 
     @GetMapping
