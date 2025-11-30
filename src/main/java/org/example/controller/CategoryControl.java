@@ -19,28 +19,22 @@ public class CategoryControl {
 
     @PostMapping
     public ResponseEntity<Category> create(@RequestBody Category category){
-        Category salvar = categoryService.create(category);
-        return ResponseEntity.ok(salvar);
+        return ResponseEntity.ok(categoryService.create(category));
     }
 
     @GetMapping
-    public ResponseEntity <List<Category>> listar(){
-        List<Category> categories = categoryRepository.findAll();
-        return ResponseEntity.ok(categories);
+    public ResponseEntity <List<Category>> listAll(){
+        return ResponseEntity.ok(categoryService.ListAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity <Category> busca(@PathVariable Long id){
-        Category category = categoryRepository.findById(id).
-                orElseThrow(() -> new NotFoundException("Category not found"));
-        return ResponseEntity.ok(category);
+    public ResponseEntity <Category> search(@PathVariable Long id){
+        return ResponseEntity.ok(categoryService.search(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id){
-        Category category = categoryRepository.findById(id).
-                orElseThrow(() -> new NotFoundException("Category not found to delete"));
-        categoryRepository.delete(category);
+            categoryService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

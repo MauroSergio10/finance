@@ -1,12 +1,16 @@
 package org.example.exception;
 
 import org.apache.coyote.BadRequestException;
+import org.springframework.cglib.core.Local;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -23,40 +27,48 @@ public class GlobalExceptionHandler {
             NotFoundException.class, HttpStatus.NOT_FOUND,
             TimeoutException.class, HttpStatus.BAD_GATEWAY,
             BadRequestException.class, HttpStatus.BAD_REQUEST
-    )
+    );
+    //Static class for organize return data
+    public record ErrorBody(
+            LocalDateTime timestamp,
+            String error,
+            String message
+    ) {}
 
     //Validação do @Valid
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex){
-        String message = ex.getBindingResult()
-                .getAllErrors()
-                .get(0)
-                .getDefaultMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleValidation(MethodArgumentNotValidException ex){
+
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName =  ((FieldError) error).getField();
+            String erroMessage = error.getDefaultMessage();
+            errors.put(fieldName, erroMessage);
+        });
+
+        return errors;
     }
 
     //Unique constraints
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> handleUnique(DataIntegrityViolationException ex){
-        //409
-        Map<String, Object> body = new HashMap<>();
-        body.put("Timestamp", LocalDateTime.now());
-        body.put("error", "Unique_CONSTRAINTS");
-        body.put("message", "Valor duplicado: este registro já existe");
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorBody handleUnique(DataIntegrityViolationException ex){
+        return new ErrorBody(LocalDateTime.now(), "UNIQUE CONSTRAINTS", "Valor duplicado: esse registro já existe");
     }
 
-    @ExceptionHandler(CustomException.class)//Listen all CustomException and sons
-    public ResponseEntity<Map<String, Object>> handleCustomException(CustomException ex){
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("error", ex.getCode());
-        body.put("message", ex.getMessage());
-
-        //Decide qual status HTTP retornar
-        return ResponseEntity.status(status).body(body);
+    //Listen all CustomException and sons
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ErrorBody> handleCustomException(CustomException ex){
+        return ResponseEntity
+                .status(ERROR_MAP.getOrDefault(ex.getClass(), HttpStatus.INTERNAL_SERVER_ERROR))
+                .body(new ErrorBody(LocalDateTime.now(), ex.getCode(), ex.getMessage()));
     }
 
+    @ExceptionHandler(ErrorResponseException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorBody handleServerError(CustomException ex){
+       return new ErrorBody(LocalDateTime.now(), "ERRO_INTERNO", "Erro interno no servidor");
+    }
 }

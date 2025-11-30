@@ -1,10 +1,14 @@
 package org.example.service;
 
 import org.example.entity.Category;
+import org.example.exception.NotFoundException;
 import org.example.exception.TimeoutException;
 import org.example.repository.CategoryRepository;
 import org.hibernate.QueryTimeoutException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -21,5 +25,20 @@ public class CategoryService {
         } catch (QueryTimeoutException e) {
             throw new TimeoutException("Tempo de conexão esgotado");
         }
+    }
+
+    public List<Category> ListAll(){
+        return categoryRepository.findAll();
+    }
+
+    public Category search(Long id){
+        return categoryRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Category not found"));
+    }
+
+    public void delete(Long id){
+        Category deleteData = categoryRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Category not found to delete"));
+        categoryRepository.delete(deleteData);
     }
 }
