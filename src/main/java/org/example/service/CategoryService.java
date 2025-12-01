@@ -8,6 +8,7 @@ import org.hibernate.QueryTimeoutException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -34,6 +35,20 @@ public class CategoryService {
     public Category search(Long id){
         return categoryRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Category not found"));
+    }
+
+    public Category update(Long id, Map<String, Object> category){
+        Category update = categoryRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Category not found"));
+
+        category.forEach((field, value) ->
+            switch (field){
+                case "name":
+                    update.setName((String) value);
+                    break;
+                case De
+            }
+        }
     }
 
     public void delete(Long id){

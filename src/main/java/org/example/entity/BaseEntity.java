@@ -4,25 +4,20 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
-@Entity
-public class Category extends BaseEntity {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+public abstract class BaseEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 20, nullable = false)
-    private String name;
-
     @CreatedDate
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedBy
     private LocalDateTime updateAt;
-
-    @OneToMany(mappedBy = "category")
-    private List<Transactions> transactions;
 }

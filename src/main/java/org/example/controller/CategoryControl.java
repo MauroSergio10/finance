@@ -6,6 +6,7 @@ import org.example.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/category")
@@ -30,6 +31,14 @@ public class CategoryControl {
     @GetMapping("/{id}")
     public ResponseEntity <Category> search(@PathVariable Long id){
         return ResponseEntity.ok(categoryService.search(id));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Category> update(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> category){
+
+        CategoryService.update(id, category);
     }
 
     @DeleteMapping("/{id}")
