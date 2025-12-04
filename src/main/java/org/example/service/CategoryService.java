@@ -9,14 +9,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    CategoryService(CategoryRepository categoryRepository){
+    CategoryService2(CategoryRepository categoryRepository){
         this.categoryRepository = categoryRepository;
     }
 
@@ -42,13 +41,13 @@ public class CategoryService {
                 orElseThrow(() -> new NotFoundException("Category not found"));
 
         category.forEach((field, value) ->
-            switch (field){
-                case "name":
-                    update.setName((String) value);
-                    break;
-                case De
-            }
-        }
+                switch (field){
+                    case "name":
+                        update.setName((String) value);
+                        break;
+                    default:
+                }
+        );
     }
 
     public void delete(Long id){
@@ -57,3 +56,6 @@ public class CategoryService {
         categoryRepository.delete(deleteData);
     }
 }
+
+
+
