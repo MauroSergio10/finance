@@ -1,7 +1,7 @@
 package org.example.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.example.entity.Category;
-import org.example.exception.NotFoundException;
 import org.example.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,13 +10,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/category")
+@RequiredArgsConstructor
 public class CategoryControl {
 
     private final CategoryService categoryService;
-
-    CategoryControl(CategoryService categoryService){
-        this.categoryService = categoryService;
-    }
 
     @PostMapping
     public ResponseEntity<Category> create(@RequestBody Category category){
@@ -24,13 +21,15 @@ public class CategoryControl {
     }
 
     @GetMapping
-    public ResponseEntity <List<Category>> listAll(){
-        return ResponseEntity.ok(categoryService.ListAll());
+    public ResponseEntity<List<Category>> listAll(){
+        List<Category> categories = categoryService.ListAll();
+        return ResponseEntity.ok(categories);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity <Category> search(@PathVariable Long id){
-        return ResponseEntity.ok(categoryService.search(id));
+        Category buscar = categoryService.search(id);
+        return ResponseEntity.ok(buscar);
     }
 
     @PatchMapping("/{id}")
@@ -38,7 +37,9 @@ public class CategoryControl {
             @PathVariable Long id,
             @RequestBody Map<String, Object> category){
 
-        CategoryService.update(id, category);
+        Category categoryCopy = categoryService.update(id, category);
+
+        return ResponseEntity.ok(categoryCopy);
     }
 
     @DeleteMapping("/{id}")

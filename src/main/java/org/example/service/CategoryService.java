@@ -1,5 +1,6 @@
 package org.example.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.entity.Category;
 import org.example.exception.NotFoundException;
 import org.example.exception.TimeoutException;
@@ -11,13 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-
-    CategoryService2(CategoryRepository categoryRepository){
-        this.categoryRepository = categoryRepository;
-    }
 
     public Category create(Category category) {
         try {
@@ -40,14 +38,16 @@ public class CategoryService {
         Category update = categoryRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Category not found"));
 
-        category.forEach((field, value) ->
-                switch (field){
-                    case "name":
-                        update.setName((String) value);
-                        break;
-                    default:
-                }
-        );
+        category.forEach((field, value) -> {
+            switch (field) {
+                case "name":
+                    update.setName((String) value);
+                    break;
+                default:
+                    break;
+            }
+        });
+        return categoryRepository.save(update);
     }
 
     public void delete(Long id){
