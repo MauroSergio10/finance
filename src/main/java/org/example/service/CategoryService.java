@@ -1,6 +1,7 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.DTO.CategoryDTO;
 import org.example.entity.Category;
 import org.example.exception.NotFoundException;
 import org.example.exception.TimeoutException;
@@ -17,9 +18,10 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public Category create(Category category) {
+    public CategoryDTO create(CategoryDTO categoryDTO) {
         try {
-            return categoryRepository.save(category);
+            Category category = toEntity(categoryDTO);
+            return categoryRepository.save(categoryDTO);
         } catch (QueryTimeoutException e) {
             throw new TimeoutException("Tempo de conexão esgotado");
         }

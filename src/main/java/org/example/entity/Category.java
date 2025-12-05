@@ -1,27 +1,13 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
 @Entity
 public class Category extends BaseEntity {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Id
-    private Long id;
 
     @Column(length = 20, nullable = false)
     private String name;
-
-    @CreatedDate
-    private LocalDateTime createAt;
-
-    @LastModifiedBy
-    private LocalDateTime updateAt;
 
     @OneToMany(mappedBy = "category")
     private List<Transactions> transactions;

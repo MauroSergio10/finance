@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.entity.Category;
+import org.example.DTO.CategoryDTO;
 import org.example.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ public class CategoryControl {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<Category> create(@RequestBody Category category){
+    public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO category){
         return ResponseEntity.ok(categoryService.create(category));
     }
 
