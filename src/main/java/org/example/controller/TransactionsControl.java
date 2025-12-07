@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.example.entity.Category;
 import org.example.entity.Transactions;
 import org.example.exception.NotFoundException;
@@ -13,13 +14,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/transactions")
+@RequiredArgsConstructor
 public class TransactionsControl {
 
-    @Autowired
-    private TransactionsRepository transactionsRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final TransactionsRepository transactionsRepository;
+    private final CategoryRepository categoryRepository;
 
     @PostMapping
     public ResponseEntity<Transactions> create(@RequestBody Transactions transactions) {
