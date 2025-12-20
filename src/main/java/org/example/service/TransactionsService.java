@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionsService {
 
-    private final TransactionsRepository transactionsRepository;
+    private final TransactionsRepository repository;
     private final CategoryRepository categoryRepository;
     private final TransactionsMapper mapper;
 
@@ -42,18 +42,18 @@ public class TransactionsService {
                 setCategory
         );
 
-        return mapper.toDto(transactionsRepository.save(transactions));
+        return mapper.toDto(repository.save(transactions));
     }
 
     public List<TransactionsDTO> getAll(){
-        return transactionsRepository.findAll()
+        return repository.findAll()
                 .stream()
                 .map(mapper::toDto)
                 .toList();
     }
 
     public List<TransactionsDTO> filter(FilterTransactionsDTO filter){
-            return transactionsRepository.findAll().stream()
+            return repository.findAll().stream()
                     .filter(t -> filter.minAmount() == null || filter.minAmount().compareTo(t.getAmount()) <= 0)
                     .filter(t -> filter.maxAmount() == null || filter.maxAmount().compareTo(t.getAmount()) >= 0)
                     .filter(t -> filter.dataInit() == null || filter.dataInit().isBefore(t.getDateTransaction()))
@@ -66,19 +66,19 @@ public class TransactionsService {
     }
 
     public TransactionsDTO update(Long id, CreateTransactionsDTO dto){
-        Transactions transactions = transactionsRepository.findById(id)
+        Transactions transactions = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Transaction not found"));
 
         mapper.updateToEntity(dto, transactions);
         applyCategory(dto, transactions);
 
-        return mapper.toDto(transactionsRepository.save(transactions));
+        return mapper.toDto(repository.save(transactions));
     }
 
     public void delete(Long id, CreateTransactionsDTO dto){
-        Transactions transactions = transactionsRepository.findById(id)
+        Transactions transactions = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Transaction não encontrado"));
 
-        transactionsRepository.delete(transactions);
+        repository.delete(transactions);
     }
 }

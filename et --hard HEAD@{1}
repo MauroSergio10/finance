@@ -1,0 +1,16 @@
+[33m15fb593[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: reset: moving to origin/main
+[33m15fb593[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{1}: pull: Fast-forward
+[33m562f7d1[m HEAD@{2}: commit: test de DTO
+[33m8c93ed1[m HEAD@{3}: commit: ajuste no service e adoção do RequiredArgsConstructor
+[33m234b05a[m HEAD@{4}: commit: Correção do erro no service
+[33m3a52243[m HEAD@{5}: commit: Git
+[33maf5ebda[m HEAD@{6}: reset: moving to origin/main
+[33md9ec1ce[m HEAD@{7}: commit: Gerenciamento de erro
+[33md6c16d7[m HEAD@{8}: commit: Ajuste no problema de relacionamento devido ao atributo value
+[33m7fad7e9[m HEAD@{9}: commit: finalização do gerenciador de erros
+[33m2ebbd84[m HEAD@{10}: commit: Exception
+[33m6d90458[m HEAD@{11}: reset: moving to origin/main
+[33mdae3c1f[m HEAD@{12}: commit: category
+[33m86eb5de[m HEAD@{13}: commit: Primeiro commit com todos os arquivos do projeto
+[33m18a1231[m HEAD@{14}: Branch: renamed refs/heads/master to refs/heads/main
+[33m18a1231[m HEAD@{16}: commit (initial): first commit

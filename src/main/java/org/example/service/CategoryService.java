@@ -3,6 +3,7 @@ package org.example.service;
 import lombok.RequiredArgsConstructor;
 import org.example.DTO.Category.CategoryDTO;
 import org.example.DTO.Category.CreateCategoryDTO;
+import org.example.Mapper.CategoryMapper;
 import org.example.entity.Category;
 import org.example.exception.NotFoundException;
 import org.example.repository.CategoryRepository;
@@ -14,30 +15,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryService {
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryRepository repository;
+    private final CategoryMapper mapper;
 
     public CategoryDTO create(CreateCategoryDTO createCategoryDTO) {
         Category entity = new Category();
         entity.setName(createCategoryDTO.name());
-        return CategoryDTO.fromEntity(categoryRepository.save(entity));
+        return mapper.toDto(repository.save(entity));
     }
 
     public List<CategoryDTO> ListAll() {
-        return categoryRepository.findAll()
+        return repository.findAll()
                 .stream()
-                .map(CategoryDTO::fromEntity)
+                .map(mapper::toDto)
                 .toList();
     }
 
     public CategoryDTO update(Long id, CreateCategoryDTO newData) {
-        Category update = categoryRepository.findById(id)
+        Category update = repository.findById(id)
                         .orElseThrow(() -> new NotFoundException("Category not found"));
         update.setName(newData.name());
-        return CategoryDTO.fromEntity(categoryRepository.save(update));
+        return mapper.toDto(repository.save(update));
     }
 
     public void delete(Long id) {
-        categoryRepository.delete(categoryRepository.findById(id).
+        repository.delete(repository.findById(id).
                 orElseThrow(() -> new NotFoundException("Category not found to delete")));
     }
 }
