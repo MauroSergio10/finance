@@ -1,13 +1,19 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.DTO.Category.CreateCategoryDTO;
+import org.example.DTO.Transactions.CreateTransactionsDTO;
+import org.example.DTO.Transactions.FilterTransactionsDTO;
+import org.example.DTO.Transactions.TransactionsDTO;
 import org.example.entity.Category;
 import org.example.entity.Transactions;
 import org.example.exception.NotFoundException;
 import org.example.repository.CategoryRepository;
 import org.example.repository.TransactionsRepository;
+import org.example.service.TransactionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,33 +23,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionsControl {
 
-    private final TransactionsRepository transactionsRepository;
-    private final CategoryRepository categoryRepository;
+    TransactionsService service;
 
     @PostMapping
-    public ResponseEntity<Transactions> create(@RequestBody Transactions transactions) {
-        Long catID = transactions.getCategory().getId();
-        Category category = categoryRepository.findById(catID).orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
-        Transactions salvar = transactionsRepository.save(transactions);
-        return ResponseEntity.status(201).body(salvar);
+    public ResponseEntity<TransactionsDTO> create(@RequestBody CreateTransactionsDTO dto) {
+        return ResponseEntity.ok(service.create(dto));
     }
 
     @GetMapping
-    public ResponseEntity <List<Transactions>> listar(){
-        List<Transactions> transactions = transactionsRepository.findAll();
-        return ResponseEntity.ok(transactions);
+    public ResponseEntity <List<TransactionsDTO>> listAll(){
+        return ResponseEntity.ok(service.listAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity <Transactions> buscar(@PathVariable Long id){
-        Transactions transactions = transactionsRepository.findById(id).orElseThrow(() -> new NotFoundException("Transação não encontrada"));
-        return ResponseEntity.ok(transactions);
+    @PostMapping("/search")
+    public ResponseEntity <List<TransactionsDTO>> search(@RequestBody FilterTransactionsDTO dto){
+        return ResponseEntity.ok(service.search(dto));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TransactionsDTO> update(@PathVariable Long id,
+                                                  @RequestBody CreateTransactionsDTO dto){
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id){
-        Transactions transactions = transactionsRepository.findById(id).orElseThrow(() -> new NotFoundException("Transação não encontrada"));
-        transactionsRepository.delete(transactions);
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

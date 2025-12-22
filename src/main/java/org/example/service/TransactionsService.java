@@ -23,36 +23,32 @@ public class TransactionsService {
     private final CategoryRepository categoryRepository;
     private final TransactionsMapper mapper;
 
+    //Update the transaction category
     void applyCategory(CreateTransactionsDTO dto, Transactions t){
         if(dto.category() != null){
-            Category saved = categoryRepository.findById(dto.category())
+            Category saved = categoryRepository.findById(dto.category().id())
                     .orElseThrow(() -> new NotFoundException("Category not found"));
             t.setCategory(saved);
         }
     }
 
-    public TransactionsDTO create(CreateTransactionsDTO dto){
-        Category setCategory = categoryRepository.findById(dto.category())
+    public TransactionsDTO create(CreateTransactionsDTO newData){
+        categoryRepository.findById(newData.category().id())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
 
-        Transactions transactions = new Transactions(
-                dto.amount(),
-                dto.description(),
-                dto.dateTransaction(),
-                setCategory
-        );
+        Transactions transactions = mapper.toEntity(newData);
 
         return mapper.toDto(repository.save(transactions));
     }
 
-    public List<TransactionsDTO> getAll(){
+    public List<TransactionsDTO> listAll(){
         return repository.findAll()
                 .stream()
                 .map(mapper::toDto)
                 .toList();
     }
 
-    public List<TransactionsDTO> filter(FilterTransactionsDTO filter){
+    public List<TransactionsDTO> search(FilterTransactionsDTO filter){
             return repository.findAll().stream()
                     .filter(t -> filter.minAmount() == null || filter.minAmount().compareTo(t.getAmount()) <= 0)
                     .filter(t -> filter.maxAmount() == null || filter.maxAmount().compareTo(t.getAmount()) >= 0)
@@ -75,10 +71,9 @@ public class TransactionsService {
         return mapper.toDto(repository.save(transactions));
     }
 
-    public void delete(Long id, CreateTransactionsDTO dto){
+    public void delete(Long id){
         Transactions transactions = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Transaction não encontrado"));
-
+                .orElseThrow(() -> new NotFoundException("transaction not found"));
         repository.delete(transactions);
     }
 }

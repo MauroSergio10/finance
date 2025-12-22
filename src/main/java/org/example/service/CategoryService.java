@@ -18,13 +18,12 @@ public class CategoryService {
     private final CategoryRepository repository;
     private final CategoryMapper mapper;
 
-    public CategoryDTO create(CreateCategoryDTO createCategoryDTO) {
-        Category entity = new Category();
-        entity.setName(createCategoryDTO.name());
+    public CategoryDTO create(CreateCategoryDTO newData) {
+        Category entity = mapper.toEntity(newData);
         return mapper.toDto(repository.save(entity));
     }
 
-    public List<CategoryDTO> ListAll() {
+    public List<CategoryDTO> listAll() {
         return repository.findAll()
                 .stream()
                 .map(mapper::toDto)

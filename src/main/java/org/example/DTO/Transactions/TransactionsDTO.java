@@ -12,4 +12,3 @@ public record TransactionsDTO(Long id,
                               LocalDate dateTransaction,
                               CategoryDTO category)
 { }
-{ }

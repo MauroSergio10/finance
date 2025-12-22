@@ -13,28 +13,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryControl {
 
-    private final CategoryService categoryService;
+    private final CategoryService service;
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> create(@RequestBody CreateCategoryDTO createCategoryDTO){
-        return ResponseEntity.ok(categoryService.create(createCategoryDTO));
+    public ResponseEntity<CategoryDTO> create(@RequestBody CreateCategoryDTO dto){
+        return ResponseEntity.ok(service.create(dto));
     }
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> listAll(){
-        return ResponseEntity.ok(categoryService.ListAll());
+        return ResponseEntity.ok(service.listAll());
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<CategoryDTO> update(
             @PathVariable Long id,
             @RequestBody CreateCategoryDTO dto){
-        return ResponseEntity.ok(categoryService.update(id, dto));
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id){
-            categoryService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+            service.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

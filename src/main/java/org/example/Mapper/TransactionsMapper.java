@@ -14,9 +14,9 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", uses = CategoryMapper.class)
 public interface TransactionsMapper {
 
-    TransactionsDTO toDto(Transactions transaction);
+    TransactionsDTO toDto(Transactions transactions);
 
-    Transactions toEntity(TransactionsDTO transactionsDTO);
+    Transactions toEntity(CreateTransactionsDTO dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateToEntity(CreateTransactionsDTO dto, @MappingTarget Transactions transactions);
