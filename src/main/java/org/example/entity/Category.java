@@ -14,7 +14,7 @@ public class Category extends BaseEntity {
 
     @Setter
     @Getter
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private String name;
 
     @OneToMany(mappedBy = "category")

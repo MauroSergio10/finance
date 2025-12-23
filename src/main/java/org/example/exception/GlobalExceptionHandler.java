@@ -53,9 +53,32 @@ public class GlobalExceptionHandler {
 
     //Unique constraints
     @ExceptionHandler(DataIntegrityViolationException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorBody handleUnique(DataIntegrityViolationException ex){
-        return new ErrorBody(LocalDateTime.now(), "UNIQUE CONSTRAINTS", "Valor duplicado: esse registro já existe");
+    public ResponseEntity<ErrorBody> handleDataIntegrity(DataIntegrityViolationException ex) {
+
+        String message = "Erro de integridade de dados";
+
+        if (ex.getMostSpecificCause() != null &&
+                ex.getMostSpecificCause().getMessage() != null &&
+                ex.getMostSpecificCause().getMessage().toLowerCase().contains("unique")) {
+
+            message = "Valor duplicado: esse registro já existe";
+
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(new ErrorBody(
+                            LocalDateTime.now(),
+                            "UNIQUE_CONSTRAINT",
+                            message
+                    ));
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorBody(
+                        LocalDateTime.now(),
+                        "DATA_INTEGRITY_ERROR",
+                        message
+                ));
     }
 
     //Listen all CustomException and sons

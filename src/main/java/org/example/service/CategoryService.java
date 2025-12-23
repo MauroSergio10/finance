@@ -20,12 +20,15 @@ public class CategoryService {
 
     public CategoryDTO create(CreateCategoryDTO newData) {
         Category entity = mapper.toEntity(newData);
+        entity.setName(newData.name());
+        System.out.println(entity.getName());
         return mapper.toDto(repository.save(entity));
     }
 
     public List<CategoryDTO> listAll() {
         return repository.findAll()
                 .stream()
+                .peek(entity -> System.out.println("Entity " + entity.getName()))
                 .map(mapper::toDto)
                 .toList();
     }
