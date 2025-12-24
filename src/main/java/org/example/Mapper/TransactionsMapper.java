@@ -6,16 +6,14 @@ import org.example.DTO.Transactions.CreateTransactionsDTO;
 import org.example.DTO.Transactions.TransactionsDTO;
 import org.example.entity.Category;
 import org.example.entity.Transactions;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = CategoryMapper.class)
 public interface TransactionsMapper {
 
     TransactionsDTO toDto(Transactions transactions);
 
+    @Mapping(target = "category", ignore = true)
     Transactions toEntity(CreateTransactionsDTO dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

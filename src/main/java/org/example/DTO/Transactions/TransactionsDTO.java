@@ -10,5 +10,5 @@ public record TransactionsDTO(Long id,
                               BigDecimal amount,
                               String description,
                               LocalDate dateTransaction,
-                              CategoryDTO category)
+                              CategoryDTO categoryDTO)
 { }

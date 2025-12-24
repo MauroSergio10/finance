@@ -33,12 +33,16 @@ public class TransactionsService {
     }
 
     public TransactionsDTO create(CreateTransactionsDTO newData){
-        categoryRepository.findById(newData.category().id())
+        Transactions newTransactions = mapper.toEntity(newData);
+
+        Category category = categoryRepository.findById(newData.category())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
 
-        Transactions transactions = mapper.toEntity(newData);
 
-        return mapper.toDto(repository.save(transactions));
+        newTransactions.setCategory(category);
+
+
+        return mapper.toDto(repository.save(newTransactions));
     }
 
     public List<TransactionsDTO> listAll(){

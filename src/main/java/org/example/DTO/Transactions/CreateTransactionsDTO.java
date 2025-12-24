@@ -10,5 +10,5 @@ import java.time.LocalDate;
 public record CreateTransactionsDTO(BigDecimal amount,
                                     String description,
                                     LocalDate dateTransaction,
-                                    CategoryDTO category)
+                                    Long category)
 { }
