@@ -1,10 +1,8 @@
 package org.example.Mapper;
 
-import jakarta.transaction.Transaction;
-import org.example.DTO.Category.CategoryDTO;
+
 import org.example.DTO.Transactions.CreateTransactionsDTO;
 import org.example.DTO.Transactions.TransactionsDTO;
-import org.example.entity.Category;
 import org.example.entity.Transactions;
 import org.mapstruct.*;
 
@@ -17,5 +15,6 @@ public interface TransactionsMapper {
     Transactions toEntity(CreateTransactionsDTO dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "category", ignore = true)
     void updateToEntity(CreateTransactionsDTO dto, @MappingTarget Transactions transactions);
 }

@@ -26,21 +26,19 @@ public class TransactionsService {
     //Update the transaction category
     void applyCategory(CreateTransactionsDTO dto, Transactions t){
         if(dto.category() != null){
-            Category saved = categoryRepository.findById(dto.category().id())
+            Category saved = categoryRepository.findById(dto.category())
                     .orElseThrow(() -> new NotFoundException("Category not found"));
             t.setCategory(saved);
         }
     }
 
     public TransactionsDTO create(CreateTransactionsDTO newData){
-        Transactions newTransactions = mapper.toEntity(newData);
-
         Category category = categoryRepository.findById(newData.category())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
 
+        Transactions newTransactions = mapper.toEntity(newData);
 
         newTransactions.setCategory(category);
-
 
         return mapper.toDto(repository.save(newTransactions));
     }

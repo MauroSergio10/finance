@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionsControl {
 
-    TransactionsService service;
+    private final TransactionsService service;
 
     @PostMapping
     public ResponseEntity<TransactionsDTO> create(@RequestBody CreateTransactionsDTO dto) {
