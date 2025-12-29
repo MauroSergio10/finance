@@ -1,6 +1,7 @@
 package org.example.service;
 
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.DTO.Transactions.TransactionsDTO;
 import org.example.DTO.Transactions.CreateTransactionsDTO;

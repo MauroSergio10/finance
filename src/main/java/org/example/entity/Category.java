@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class Category extends BaseEntity {
     @Getter
     @Column(length = 20)
     private String name;
+
 
     @OneToMany(mappedBy = "category")
     private List<Transactions> transactions;

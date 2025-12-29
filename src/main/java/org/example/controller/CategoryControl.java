@@ -25,6 +25,7 @@ public class CategoryControl {
         return ResponseEntity.ok(service.listAll());
     }
 
+    //Update category
     @PatchMapping("/{id}")
     public ResponseEntity<CategoryDTO> update(
             @PathVariable Long id,
