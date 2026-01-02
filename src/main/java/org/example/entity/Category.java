@@ -15,10 +15,8 @@ public class Category extends BaseEntity {
 
     @Setter
     @Getter
-    @Column(length = 20)
+    @Column(length = 100, unique = true, nullable = false)
     private String name;
 
-
-    @OneToMany(mappedBy = "category")
     private List<Transactions> transactions;
 }

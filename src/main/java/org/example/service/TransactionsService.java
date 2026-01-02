@@ -53,11 +53,8 @@ public class TransactionsService {
 
     public List<TransactionsDTO> search(FilterTransactionsDTO filter){
             return repository.findAll().stream()
-                    .filter(t -> filter.minAmount() == null || filter.minAmount().compareTo(t.getAmount()) <= 0)
-                    .filter(t -> filter.maxAmount() == null || filter.maxAmount().compareTo(t.getAmount()) >= 0)
                     .filter(t -> filter.dataInit() == null || filter.dataInit().isBefore(t.getDateTransaction()))
                     .filter(t -> filter.dataEnd() == null || filter.dataEnd().isAfter(t.getDateTransaction()))
-                    .filter(t -> filter.today() == null || filter.today().equals(t.getDateTransaction()))
                     .filter(t -> filter.description() == null || filter.description().equals(t.getDescription()))
                     .filter(t-> filter.category() == null || filter.category().equals(t.getCategory().getId()))
                     .map(mapper::toDto)

@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 public class Transactions extends BaseEntity{
 
     @Column(precision = 10, scale = 2, nullable = false)
-    private BigDecimal amount;
+    private BigDecimal value;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 200)
     private String description;
 
     @Column(nullable = false)
@@ -29,11 +29,8 @@ public class Transactions extends BaseEntity{
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    public Transactions(BigDecimal amount, String description, LocalDate dateTransaction, Category category){
-        this.amount = amount;
-        this.description = description;
-        this.dateTransaction = dateTransaction;
-        this.category = category;
-    };
+    @OneToMany
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 
 }

@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.DTO.Category.CategoryDTO;
 import org.example.DTO.Category.CreateCategoryDTO;
@@ -16,7 +17,7 @@ public class CategoryControl {
     private final CategoryService service;
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> create(@RequestBody CreateCategoryDTO dto){
+    public ResponseEntity<CategoryDTO> create(@Valid @RequestBody CreateCategoryDTO dto){
         return ResponseEntity.ok(service.create(dto));
     }
 
@@ -29,7 +30,7 @@ public class CategoryControl {
     @PatchMapping("/{id}")
     public ResponseEntity<CategoryDTO> update(
             @PathVariable Long id,
-            @RequestBody CreateCategoryDTO dto){
+            @Valid @RequestBody CreateCategoryDTO dto){
         return ResponseEntity.ok(service.update(id, dto));
     }
 

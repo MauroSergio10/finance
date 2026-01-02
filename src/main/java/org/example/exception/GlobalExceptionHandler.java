@@ -1,23 +1,18 @@
 package org.example.exception;
 
 import org.apache.coyote.BadRequestException;
-import org.springframework.cglib.core.Local;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice //Listen all Controlls
@@ -32,53 +27,35 @@ public class GlobalExceptionHandler {
     public record ErrorBody(
             LocalDateTime timestamp,
             String error,
-            String message
+            Object message
     ) {}
 
-    //Validação do @Valid
+    //Bean validation
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidation(MethodArgumentNotValidException ex){
+    public ResponseEntity<ErrorBody> handleValidation(MethodArgumentNotValidException ex){
 
         Map<String, String> errors = new HashMap<>();
 
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName =  ((FieldError) error).getField();
-            String erroMessage = error.getDefaultMessage();
-            errors.put(fieldName, erroMessage);
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            errors.put(error.getField(), error.getDefaultMessage());
         });
 
-        return errors;
+        return ResponseEntity.badRequest().body(
+                new ErrorBody(
+                        LocalDateTime.now(),
+                        "INVALID_REQUEST",
+                        errors));
     }
 
-    //Unique constraints
+    //Database Constraints
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorBody> handleDataIntegrity(DataIntegrityViolationException ex) {
+    public ResponseEntity<ErrorBody> handleDataIntegrity(DataIntegrityViolationException ex){
 
-        String message = "Erro de integridade de dados";
-
-        if (ex.getMostSpecificCause() != null &&
-                ex.getMostSpecificCause().getMessage() != null &&
-                ex.getMostSpecificCause().getMessage().toLowerCase().contains("unique")) {
-
-            message = "Valor duplicado: esse registro já existe";
-
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body(new ErrorBody(
-                            LocalDateTime.now(),
-                            "UNIQUE_CONSTRAINT",
-                            message
-                    ));
-        }
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorBody(
+        return ResponseEntity.status(409).body(
+                new ErrorBody(
                         LocalDateTime.now(),
-                        "DATA_INTEGRITY_ERROR",
-                        message
-                ));
+                        "DATA_INTEGRITY_VIOLATION",
+                        ex.getMessage()));
     }
 
     //Listen all CustomException and sons
@@ -86,12 +63,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorBody> handleCustomException(CustomException ex){
         return ResponseEntity
                 .status(ERROR_MAP.getOrDefault(ex.getClass(), HttpStatus.INTERNAL_SERVER_ERROR))
-                .body(new ErrorBody(LocalDateTime.now(), ex.getCode(), ex.getMessage()));
+                .body(
+                        new ErrorBody(
+                                LocalDateTime.now(),
+                                ex.getCode(),
+                                ex.getMessage()));
     }
 
     @ExceptionHandler(ErrorResponseException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorBody handleServerError(CustomException ex){
-       return new ErrorBody(LocalDateTime.now(), "ERRO_INTERNO", "Erro interno no servidor");
+       return new ErrorBody(
+               LocalDateTime.now(),
+               "ERRO_INTERNO",
+               "Erro interno no servidor");
     }
 }

@@ -1,4 +1,11 @@
 package org.example.DTO.Category;
 
-public record CreateCategoryDTO(String name) {
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+public record CreateCategoryDTO(
+        @NotNull(message = "Name required")
+        @Size(max = 100, message = "Max 50 characters")
+        String name
+) {
 }

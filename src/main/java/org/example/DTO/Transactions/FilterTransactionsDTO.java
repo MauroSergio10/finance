@@ -7,11 +7,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record FilterTransactionsDTO(
-        BigDecimal minAmount,
-        BigDecimal maxAmount,
+        BigDecimal minValue,
+        BigDecimal maxValue,
         LocalDate dataInit,
         LocalDate dataEnd,
-        LocalDate today,
         String description,
         Long category
 ) { }

@@ -26,7 +26,6 @@ public class CategoryService {
     public List<CategoryDTO> listAll() {
         return repository.findAll()
                 .stream()
-                .peek(entity -> System.out.println("Entity " + entity.getName()))
                 .map(mapper::toDto)
                 .toList();
     }
