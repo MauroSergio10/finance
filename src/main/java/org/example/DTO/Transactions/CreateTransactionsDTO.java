@@ -24,5 +24,6 @@ public record CreateTransactionsDTO(
         LocalDate dateTransaction,
 
         @NotNull(message = "Category is required")
-        Long category)
+        Long category
+)
 { }
