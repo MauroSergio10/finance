@@ -1,25 +1,29 @@
-# 💰 Controle Financeiro Pessoal
+# <center> 💰 Controle Financeiro Pessoal </center>
 
-## 📌 Visão Geral
+
+
+## Introdução
 Aplicação com objetivo de fornecer controle financeiro que registra 
 receitas e despesas mensais, calcula o saldo disponível e apresenta a 
 distribuição percentual dos gastos por categoria.
 
----
 
 ## 🎯 Objetivo
-Controle financeiro de forma clara, simples e dinâmica
+Este sistema tem como objetivo permitir o controle de receitas e despesas de forma
+centralizada, automatizada e confiável, substituindo o uso de planilhas manuais.
 
----
+A aplicação busca reduzir operações repetitivas, minimizar erros no registro de dados
+e facilitar a visualização do histórico financeiro, servindo como base para análises
+e futuras evoluções do sistema.
 
 ## ⚙️ Tecnologias utilizadas
+
+![Java](https://img.shields.io/badge/Java-red?logo=java)
 - **Java 21**
 - **Spring Boot**
 - **JPA / Hibernate**
 - **Supabase**
 - **Maven**
-
----
 
 ## 🧱 Arquitetura
 O projeto utiliza uma **arquitetura em camadas**, adequada para aplicações REST, separando responsabilidades para facilitar manutenção, testes e evolução do sistema.
@@ -29,14 +33,10 @@ O projeto utiliza uma **arquitetura em camadas**, adequada para aplicações RES
 - **Repository**: Responsável pelo acesso e persistência dos dados
 - **Entity**: Representação das entidades e tabelas do banco de dados
 
----
-
 ## 🚀 Status do Projeto
 Em desenvolvimento
 
 Funcionalidades estão sendo implementadas de forma incremental.
-
----
 
 ## ▶️ Como Executar o Projeto
 
@@ -85,4 +85,6 @@ mvn spring-boot:run
 ````
 4. A aplicação estará disponivel em:
    http://localhost:8080
+
+##
 
