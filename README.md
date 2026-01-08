@@ -8,7 +8,7 @@ receitas e despesas mensais, calcula o saldo disponível e apresenta a
 distribuição percentual dos gastos por categoria.
 
 
-## 🎯 Objetivo
+## Objetivo
 Este sistema tem como objetivo permitir o controle de receitas e despesas de forma
 centralizada, automatizada e confiável, substituindo o uso de planilhas manuais.
 
@@ -16,16 +16,15 @@ A aplicação busca reduzir operações repetitivas, minimizar erros no registro
 e facilitar a visualização do histórico financeiro, servindo como base para análises
 e futuras evoluções do sistema.
 
-## ⚙️ Tecnologias utilizadas
+## Tecnologias utilizadas
 
-![Java](https://img.shields.io/badge/Java-red?logo=java)
-- **Java 21**
-- **Spring Boot**
-- **JPA / Hibernate**
-- **Supabase**
-- **Maven**
+![Java](https://img.shields.io/badge/Java-21-red?style=for-the-badge&logo=java)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-brightgreen?style=for-the-badge&logo=springboot)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?style=for-the-badge&logo=postgresql)
+![Maven](https://img.shields.io/badge/Maven-3.9-orange?style=for-the-badge&logo=apachemaven)
 
-## 🧱 Arquitetura
+
+## Arquitetura
 O projeto utiliza uma **arquitetura em camadas**, adequada para aplicações REST, separando responsabilidades para facilitar manutenção, testes e evolução do sistema.
 
 - **Controller**: Responsável por expor os endpoints REST e receber as requisições
@@ -33,12 +32,12 @@ O projeto utiliza uma **arquitetura em camadas**, adequada para aplicações RES
 - **Repository**: Responsável pelo acesso e persistência dos dados
 - **Entity**: Representação das entidades e tabelas do banco de dados
 
-## 🚀 Status do Projeto
+## Status do Projeto
 Em desenvolvimento
 
 Funcionalidades estão sendo implementadas de forma incremental.
 
-## ▶️ Como Executar o Projeto
+## Como Executar o Projeto
 
 ### Pré-requisitos
 - Java 21 instalado
@@ -86,5 +85,9 @@ mvn spring-boot:run
 4. A aplicação estará disponivel em:
    http://localhost:8080
 
-##
+<p align="right">
+  <a href="https://github.com/MauroSergio10/finance?tab=readme-ov-file#--controle-financeiro-pessoal-">Voltar para o topo</a>
+</p>
+
+
 
