@@ -1,0 +1,12 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(user, "User", "Manages personal finances")
+System(financeSystem, "Finance System", "Tracks income and expenses")
+System_Ext(bankApp, "Bank App", "Generate trasaction notification")
+
+Rel(user, financeSystem, "Records transactions")
+Rel(bankApp, financeSystem, "Sends transaction notifications")
+
+
+@enduml
