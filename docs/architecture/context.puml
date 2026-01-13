@@ -3,10 +3,16 @@
 
 Person(user, "User", "Manages personal finances")
 System(financeSystem, "Finance System", "Tracks income and expenses")
-System_Ext(bankApp, "Bank App", "Generate trasaction notification")
 
-Rel(user, financeSystem, "Records transactions")
+System_Ext(bankApp, "Bank App", "Generates transaction notifications")
+System_Ext(emailService, "Email Service", "Send email alerts")
+System_Ext(emailClient, "Email Client", "Receive messages")
+
+Rel(user, financeSystem, "Records and views transactions")
 Rel(bankApp, financeSystem, "Sends transaction notifications")
+Rel(financeSystem, emailService, "Request email delivery")
+Rel(emailService, emailClient, "Delivers email messages")
+Rel(user, emailClient, "Read email notification")
 
 
 @enduml
