@@ -1,22 +1,13 @@
-# <center> 💰 Controle Financeiro Pessoal </center>
+# <center> 💰 Personal financial control </center>
 
 
 
-## Introdução
-Aplicação com objetivo de fornecer controle financeiro que registra 
-receitas e despesas mensais, calcula o saldo disponível e apresenta a 
-distribuição percentual dos gastos por categoria.
+## Introduction
+An application designed to improve financial management that allows users to 
+record income and expenses, track balances, and analyse spending by category in an
+automated and centralized way.
 
-
-## Objetivo
-Este sistema tem como objetivo permitir o controle de receitas e despesas de forma
-centralizada, automatizada e confiável, substituindo o uso de planilhas manuais.
-
-A aplicação busca reduzir operações repetitivas, minimizar erros no registro de dados
-e facilitar a visualização do histórico financeiro, servindo como base para análises
-e futuras evoluções do sistema.
-
-## Tecnologias utilizadas
+## Tecnology
 
 ![Java](https://img.shields.io/badge/Java-21-red?style=for-the-badge&logo=java)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-brightgreen?style=for-the-badge&logo=springboot)
@@ -24,56 +15,46 @@ e futuras evoluções do sistema.
 ![Maven](https://img.shields.io/badge/Maven-3.9-orange?style=for-the-badge&logo=apachemaven)
 
 
-## Arquitetura
-O projeto utiliza uma **arquitetura em camadas**, adequada para aplicações REST, separando responsabilidades para facilitar manutenção, testes e evolução do sistema.
+## Architecture
+O projeto utiliza uma **arquitetura em camadas**, adequada para aplicações REST, separando
+responsabilidades para facilitar manutenção, testes e evolução do sistema.
 
-- **Controller**: Responsável por expor os endpoints REST e receber as requisições
-- **Service**: Contém as regras de negócio da aplicação
-- **Repository**: Responsável pelo acesso e persistência dos dados
-- **Entity**: Representação das entidades e tabelas do banco de dados
+The project uses a "layered architecture", suitable to a Rest applications, by 
+separating responsibilities to make maintenance, testing and future improvements easier.
 
-## Status do Projeto
-Em desenvolvimento
+- **Controller**: Responsible for exposing REST endpoints and receiving requests.
+- **Service**: Contains the application´s business rules.
+- **Repository**: Handles data access and persistence
+- **Entity**: Represents database table
 
-Funcionalidades estão sendo implementadas de forma incremental.
 
-## Como Executar o Projeto
+## Project status
+Under development
 
-### Pré-requisitos
-- Java 21 instalado
+## Tutorial
+
+### Represents database table
+- Java 21 
 - Maven
-- Conta no Supabase (PosgresSQL)
 
-### Execução do projeto
+### Running the project
+This project is designed to run out of the box without requiring any external services.
 
-Este projeto utiliza Supabase como backend (PostgreSQL).
+By default, it runs with:
 
-Por motivos de segurança:
-- As credenciais do Supabase **não estão versionadas**
-- Não há ambiente público de demonstração
+- H2 in-memory database
+- Mocked authentication
+- No Supabase configuration required
 
-A execução local requer a configuração manual das variáveis de ambiente.
+Supabase (PostgreSQL + Auth) is used only in the proction profile
 
-1. Clone o repositório:
+1. Clone the repository:
 ```bash
 git clone https://github.com/MauroSergio10/finance.git
+cd finance
 ```
-2. Configuração das variáveis de ambiente
-   A aplicação utiliza **PostgreSQL** como banco de dados.
 
-As configurações de conexão devem ser definidas no arquivo `application.properties` ou por meio de variáveis de ambiente.
-
-Exemplo de configuração:
-
-```properties
-spring.datasource.url=jdbc:postgresql://<host>:<porta>/<database>
-spring.datasource.username=<usuario>
-spring.datasource.password=<senha>
-
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-````
-
-3. Instalar as dependências
+2. Instalar as dependências
 ```bash
 mvn clean install
 ```
@@ -82,8 +63,31 @@ mvn clean install
 ```bash
 mvn spring-boot:run
 ````
+
+The application will start using:
+- H2 database
+- Mocked authentication
+
 4. A aplicação estará disponivel em:
    http://localhost:8080
+
+5. Run with Supabase (production profile)
+
+To run the project using Supabase (PostgreSQL + JWT authentication), activate the prod profile and configure the required environment variables.
+
+3.1 Set environment variables
+
+```
+export SPRING_PROFILES_ACTIVE=prod
+export SUPABASE_ISSUER_URI=https://<PROJECT_ID>.supabase.co/auth/v1
+
+export SPRING_DATASOURCE_URL=jdbc:postgresql://<host>:<port>/<database>
+export SPRING_DATASOURCE_USERNAME=<username>
+export SPRING_DATASOURCE_PASSWORD=<password>
+```
+
+Supabase credentials and secrets are not versioned for security reasons.
+
 
 <p align="right">
   <a href="https://github.com/MauroSergio10/finance?tab=readme-ov-file#--controle-financeiro-pessoal-">Voltar para o topo</a>
