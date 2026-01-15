@@ -18,5 +18,6 @@ public class Category extends BaseEntity {
     @Column(length = 100, unique = true, nullable = false)
     private String name;
 
+    @OneToMany
     private List<Transactions> transactions;
 }

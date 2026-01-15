@@ -29,7 +29,7 @@ public class Transactions extends BaseEntity{
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
