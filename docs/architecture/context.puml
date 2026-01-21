@@ -1,0 +1,18 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(user, "User", "Manages personal finances")
+System(financeSystem, "Finance System", "Tracks income and expenses")
+
+System_Ext(bankApp, "Bank App", "Generates transaction notifications")
+System_Ext(emailService, "Email Service", "Send email alerts")
+System_Ext(emailClient, "Email Client", "Receive messages")
+
+Rel(user, financeSystem, "Records and views transactions")
+Rel(bankApp, financeSystem, "Sends transaction notifications")
+Rel(financeSystem, emailService, "Request email delivery")
+Rel(emailService, emailClient, "Delivers email messages")
+Rel(user, emailClient, "Read email notification")
+
+
+@enduml

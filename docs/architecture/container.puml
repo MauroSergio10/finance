@@ -1,0 +1,33 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User", "Manages personal finances")
+
+System_Boundary(financeSystem, "FinanceSystem") {
+    Container(web, "Web app", "React Native/React.js", "User web/app interface")
+    Container(api, "API", "Java / Spring Boot", "Handles business rules ")
+}
+
+System_Boundary(supabase, "Supabase Plataform"){
+    Container(auth, "Auth Service", "Go true", "Authenticates users and generates JWTs")
+    Container(db, "Database", "PostgreSQL", "Stores data and enforces RLS")
+    Container(gateway, "API Gateway", "PostgREST", "Validates JWT and routes requests to DB")
+}
+
+System_Boundary(emailSvcBoundary, "Email Service"){
+    Container(emailService, "Email Service", "Unknown", "Sends email alerts")
+}
+
+System_Boundary(emailClientBoundary, "Email Client"){
+    Container(emailClient, "Email Client", "Gmail, Hotmail etc...", "Receives email alerts")
+}
+
+Rel(user, web, "Uses")
+Rel(web, api, "Call backend with JWT")
+Rel(web, auth, "Authenticates", "HTTPS")
+Rel(api, gateway, "Accesses data with JWT or service role", "HTTP/JSON/JWT")
+Rel(gateway, db, "Execute queries")
+Rel(api, emailService, "Request email delivery")
+Rel(emailService, emailClient, "Delivers email messages", "Json/HTTP")
+
+@enduml
