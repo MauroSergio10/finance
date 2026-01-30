@@ -16,13 +16,14 @@ public class AccountService {
     AccountRepository repository;
     AccountMapper mapper;
 
-    public AccountDTO create(CreateAccountDTO newData){
+    public AccountDTO create(CreateAccountDTO newData, String userId){
         Account data = mapper.toEntity(newData);
+        data.setUserId(userId);
         return mapper.toDto(repository.save(data));
     }
 
-    public List<AccountDTO> listAll(){
-        return repository.findAll()
+    public List<AccountDTO> listAll(String userId){
+        return repository.findByUserId(userId)
                 .stream()
                 .map(mapper::toDto)
                 .toList();

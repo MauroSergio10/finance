@@ -11,6 +11,10 @@ public record CreateAccountDTO(
 
         @NotNull
         @PositiveOrZero
-        Double balance
+        Double balance,
+
+        @NotNull
+        @Size(max = 1000, message = "Max 1000 characters")
+        String userId
 )
 { }

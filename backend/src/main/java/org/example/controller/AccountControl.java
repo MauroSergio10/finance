@@ -7,6 +7,10 @@ import org.example.DTO.Account.CreateAccountDTO;
 import org.example.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
+
 
 import java.util.List;
 
@@ -18,13 +22,19 @@ public class AccountControl {
     private final AccountService service;
 
     @PostMapping
-    public ResponseEntity<AccountDTO> create(@Valid @RequestBody CreateAccountDTO dto){
-        return ResponseEntity.ok(service.create(dto));
+    public ResponseEntity<AccountDTO> create(
+            @AuthenticationPrincipal Jwt jwt,
+            @Valid @RequestBody CreateAccountDTO dto){
+
+        String userId = jwt.getSubject(); // Logged User
+
+        return ResponseEntity.ok(service.create(dto, userId));
     }
 
     @GetMapping
-    public ResponseEntity<List<AccountDTO>> listAll(){
-        return ResponseEntity.ok(service.listAll());
+    public ResponseEntity<List<AccountDTO>> listAll(@AuthenticationPrincipal Jwt jwt){
+        System.out.println(jwt.getSubject());
+        return ResponseEntity.ok(service.listAll(jwt.getSubject()));
     }
 
     @GetMapping("/{id}")

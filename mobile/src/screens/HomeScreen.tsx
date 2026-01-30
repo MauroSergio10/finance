@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
 import { 
   View, 
   Text, 
@@ -6,17 +7,53 @@ import {
   StyleSheet 
 } from 'react-native';
 
-interface HomeScreenProps {
-  navigation: any;
+type HomeScreenProps = {
+  navigation: any,
+  setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function HomeScreen({ navigation }: HomeScreenProps) {
+export default function HomeScreen({ setIsLogged, navigation }: HomeScreenProps) {
   const handleLogout = () => {
-    navigation.navigate('Login');
+    supabase.auth.signOut();
+    setIsLogged(false);
   };
+
+  const [accounts, setAccounts] = useState<any[]>([])
+  const [total, setTotal] = useState(0);
+
+
+  useEffect(() => {
+    loadAccounts();
+  }, []);
+
+  const loadAccounts = async () => {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token; 
+
+    if (!token) return;
+
+    const response = await fetch("http://10.198.177.150:8080/account",{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const list = await response.json();
+    setAccounts(list);
+
+    const sum = list.reduce(
+      (s:number, acc: any) => acc.balance,
+      0
+    );
+
+    setTotal(sum);
+  }
 
   return (
     <View style={styles.container}>
+      <Text>
+        {`Saldo: ${total}`}
+      </Text>
       <Text style={styles.title}>Welcome to Finance App!</Text>
       <Text style={styles.subtitle}>You are successfully logged in</Text>
       

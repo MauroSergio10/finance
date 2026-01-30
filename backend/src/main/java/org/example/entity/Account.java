@@ -18,6 +18,9 @@ public class Account extends BaseEntity {
     @Column(precision = 12, scale = 2)
     private BigDecimal balance = BigDecimal.ZERO;
 
+    @Column(nullable = false, length = 1000)
+    private String userId; //User Account
+
     @OneToMany
     private List<Transactions> transactions;
 }

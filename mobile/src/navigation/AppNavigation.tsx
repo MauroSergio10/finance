@@ -9,7 +9,8 @@ export default function AppNavigation() {
 
   return (
     <NavigationContainer>
-      {isLogged ? <AppStack /> : <AuthStack />}
+      {isLogged ? <AppStack setIsLogged={setIsLogged} /> : <AuthStack setIsLogged={setIsLogged} />}
     </NavigationContainer>
   );
 }
+

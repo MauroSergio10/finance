@@ -40,3 +40,4 @@ build/
 
 /backend/application.properties
 /mobile/node_modules
+/mobile/src/lib/supabase.ts

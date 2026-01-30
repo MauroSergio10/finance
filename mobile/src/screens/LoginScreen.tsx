@@ -2,83 +2,99 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   Alert,
-  KeyboardAvoidingView
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { InputField } from '../style/InputField';
+import { supabase } from '../lib/supabase';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import HomeScreen from './HomeScreen';
 
-interface LoginScreenProps {
-  navigation: any;
+type LoginScreen = {
+  navigation: any
+  setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function LoginScreen({ navigation }: LoginScreenProps) {
+export default function LoginScreen({ navigation, setIsLogged }: LoginScreen){
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      Alert.alert('Error', error.message);
+      return;
+    }
+
+    console.log(data.session);
+  
+
     Alert.alert('Success', 'Login successful!');
-    navigation.navigate('Home');
+    setIsLogged(true);
   };
 
   return (
-    <LinearGradient
-      colors={[
-        '#020021',
-        '#03094A',
-        '#16132A',
-        '#5B301E',
-        '#A22300',
-      ]}
-      locations={[0, 0.29, 0.5, 0.74, 1]}
-      start={{x: 0, y:0}}
-      end={{x:1, y:1}}
-      style={styles.container}
-    >
-      <Text style={styles.title}>Welcome Back</Text>
-      <Text style={styles.subtitle}>Sign in to continue</Text>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flex: 1}}
+      enableOnAndroid>
+      <LinearGradient
+        colors={[
+          '#020021',
+          '#03094A',
+          '#16132A',
+          '#5B301E',
+          '#A22300',
+        ]}
+        locations={[0, 0.29, 0.5, 0.74, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.container}
+      >
+        <Text style={styles.title}>Welcome Back</Text>
+        <Text style={styles.subtitle}>Sign in to continue</Text>
 
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#aaa"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
+        <View style={styles.form}>
+          <InputField
+            icon="mail-outline"
+            placeholder='Email'
+            value={email}
+            onChangeText={setEmail}
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#aaa"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+          <InputField
+            icon="lock-closed-outline"
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.linkButton}
-          onPress={() => navigation.navigate('CreateAccount')}
-        >
-          <Text style={styles.linkText}>
-            Don't have an account? Sign Up
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </LinearGradient>
+          <TouchableOpacity
+            style={styles.linkButton}
+            onPress={() => navigation.navigate('CreateAccount')}
+          >
+            <Text style={styles.linkText}>
+              Don't have an account? Sign Up
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -105,17 +121,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 12,
   },
-  input: {
-    height: 50,
-    borderColor: '#444',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    fontSize: 16,
-    color: '#ffffff',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-  },
+
   button: {
     backgroundColor: '#22c55e',
     paddingVertical: 15,
