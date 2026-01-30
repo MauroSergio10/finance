@@ -61,7 +61,10 @@ export default function HomeScreen({ setIsLogged, navigation }: HomeScreenProps)
         <Text style={styles.description}>
           This is your home screen. You can now start building your finance features here.
         </Text>
-        
+
+        <TouchableOpacity style={styles.logoutButton} onPress={navigation.navigate("CreateBankAccount")}>
+          <Text style={styles.logoutButtonText}>Create Bank Account</Text>
+        </TouchableOpacity>    
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>

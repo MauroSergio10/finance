@@ -10,7 +10,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { InputField } from '../style/InputField';
 import { supabase } from '../lib/supabase';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import HomeScreen from './HomeScreen';
 
 type LoginScreen = {
   navigation: any
