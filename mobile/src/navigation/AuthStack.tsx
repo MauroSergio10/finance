@@ -2,23 +2,30 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen';
 import CreateAccountScreen from '../screens/CreateAccountScreen';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Login: undefined
+  CreateAccount: undefined
+};
 
-type AuthStackProps = {
-  setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
-}
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function AuthStack({ setIsLogged }: AuthStackProps) {
+
+export default function AuthStack() {
   return (
-    <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Login" options={{headerShown: false}}>
-      {(props) => <LoginScreen {...props} setIsLogged={setIsLogged} />}
-      </Stack.Screen>
+    <Stack.Navigator 
+    initialRouteName="Login" 
+    screenOptions={{ headerShown: false }}>
+      
+      <Stack.Screen 
+        name="Login" 
+        component={LoginScreen}
+      />
+
       <Stack.Screen
         name="CreateAccount"
         component={CreateAccountScreen}
-        options={{ headerShown: false }}
       />
+
     </Stack.Navigator>
   );
 }

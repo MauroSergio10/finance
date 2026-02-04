@@ -6,25 +6,23 @@ import {
   TouchableOpacity, 
   StyleSheet 
 } from 'react-native';
+import { useAuth } from '../auth/AuthProvider';
 
-type HomeScreenProps = {
-  navigation: any,
-  setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
-}
+type HomeScreeNavigation
 
-export default function HomeScreen({ setIsLogged, navigation }: HomeScreenProps) {
-  const handleLogout = () => {
-    supabase.auth.signOut();
-    setIsLogged(false);
-  };
+export default function HomeScreen() {
 
   const [accounts, setAccounts] = useState<any[]>([])
   const [total, setTotal] = useState(0);
-
+  const {logout} = useAuth();
 
   useEffect(() => {
     loadAccounts();
   }, []);
+
+  const handleLogout = async () => {
+    logout();
+  };
 
   const loadAccounts = async () => {
     const { data } = await supabase.auth.getSession();
@@ -42,7 +40,7 @@ export default function HomeScreen({ setIsLogged, navigation }: HomeScreenProps)
     setAccounts(list);
 
     const sum = list.reduce(
-      (s:number, acc: any) => acc.balance,
+      (s:number, acc: any) => s + acc.balance,
       0
     );
 
@@ -62,7 +60,7 @@ export default function HomeScreen({ setIsLogged, navigation }: HomeScreenProps)
           This is your home screen. You can now start building your finance features here.
         </Text>
 
-        <TouchableOpacity style={styles.logoutButton} onPress={navigation.navigate("CreateBankAccount")}>
+        <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate("CreateBankAccount")}>
           <Text style={styles.logoutButtonText}>Create Bank Account</Text>
         </TouchableOpacity>    
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>

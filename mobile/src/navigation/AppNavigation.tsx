@@ -1,15 +1,18 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { useState } from 'react';
-
 import AuthStack from './AuthStack';
 import AppStack from './AppStack';
+import { useAuth } from '../auth/AuthProvider';
+
+
 
 export default function AppNavigation() {
-  const [isLogged, setIsLogged] = useState(false);
+  
+  const {isLogged} = useAuth()
+
 
   return (
     <NavigationContainer>
-      {isLogged ? <AppStack setIsLogged={setIsLogged} /> : <AuthStack setIsLogged={setIsLogged} />}
+      {isLogged ? <AppStack/> : <AuthStack/>}
     </NavigationContainer>
   );
 }

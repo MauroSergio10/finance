@@ -2,22 +2,26 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import CreateBankAccount from '../screens/CreateBankAccount';
 
-const Stack = createNativeStackNavigator();
-
-type appStackProps = {
-  setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
+type RootStackParamList = {
+  Home: undefined,
+  CreateBankAccount: undefined;
 }
 
-export default function AppStack({ setIsLogged }: appStackProps ) {
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+export default function AppStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" options={{ headerShown: false }}>
-        {(props) => <HomeScreen {...props} setIsLogged={setIsLogged}/>}
-      </Stack.Screen>
+    <Stack.Navigator 
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen 
+        name="Home"
+        component={HomeScreen} 
+      />
+
       <Stack.Screen
         name="CreateBankAccount"
         component={CreateBankAccount}
-        options={{ headerShown: false }}
       />
     </Stack.Navigator>  
   );

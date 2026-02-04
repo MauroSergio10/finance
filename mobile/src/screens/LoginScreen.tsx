@@ -8,36 +8,26 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { InputField } from '../style/InputField';
-import { supabase } from '../lib/supabase';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useAuth } from '../auth/AuthProvider';
 
-type LoginScreen = {
-  navigation: any
-  setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
-}
 
-export default function LoginScreen({ navigation, setIsLogged }: LoginScreen){
+export default function LoginScreen(){
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const {login} = useAuth()
+  
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) {
-      Alert.alert('Error', error.message);
-      return;
+    try{
+      await login(email, password);
+    }catch (err:any){
+      Alert.alert("Error", err.message)
     }
-
-    console.log(data.session);
-  
 
     Alert.alert('Success', 'Login successful!');
     setIsLogged(true);
