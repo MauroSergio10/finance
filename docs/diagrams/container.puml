@@ -1,0 +1,38 @@
+@startuml
+
+ !include <C4/C4_Container>
+
+ !include <logos/java>
+ !include <logos/react>
+ !include <logos/postgresql>
+
+
+ LAYOUT_WITH_LEGEND()
+
+ Person(user, "User", "Manages personal finances")
+
+ System_Boundary(financeSystem, "FinanceSystem") {
+     Container(web, "Web", "React.js", "Web Interface", $sprite="react")
+     Container(mobileApp, "Mobile App", "React Native", "App interface")
+     Container(api, "API Application", "Java / Spring Boot", "Provides system functionality", $sprite="java")
+     ContainerDb(db, "Main storage", "Stores user registration information, hashed, authentication credentials, access logs, etc.", $sprite="postgresql")
+ }
+
+ System_Ext(emailClient, "Email Client", "Software System", "Receives email from the system")
+ System_Ext(bankAPI, "Bank Open Finance API", "ProvidesOAuth authentication and transaction data")
+
+
+ Rel(user, web, "Uses")
+ Rel(user, mobileApp, "Uses")
+
+ Rel(web, api, "Request ", "Json/Https")
+ Rel(mobileApp, api, "Request ", "Json/Https")
+
+ Rel(api, db, "Request from and writes to", "JDBC")
+ Rel(api, bankAPI, "Authenticates and fetches transactions", "OAuth2 + REST")
+
+ Rel(api, emailClient, "Send Email using", "MimeMessage")
+
+
+
+ @enduml
