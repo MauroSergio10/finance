@@ -5,17 +5,13 @@
    2. The user will make the register with Google account.
    3. The system must give a option to make login with email and password.
    4. The system must give a option to the user make login with Google account.
-   5. The system have to allow the user change your password with link through the email.
+      5. The system have to allow the user change your password with link through the email.
 ## Transaction
-1. The system must allow the user create transaction 
-with name, valuer, date, transaction type, payment method, account, category, transaction_responsible.
-
-2. The system must allow the user delete transaction.
-3. The system must allow the user edit transaction data.
-
-4. The system must allow the user filter transactions with 
-name, range valuer, range date, transaction type, payment method, category, bank_account, transaction_responsible
-5. The system will allow the user make loan transaction of all data like "create transaction" but adding expiration date for payment.
+   1. The system must allow the user create transaction with name, valuer, date, transaction type, payment method, account, category, transaction_responsible.
+   2. The system must allow the user delete transaction.
+   3. The system must allow the user edit transaction data.
+   4. The system must allow the user filter transactions with name, range valuer, range date, transaction type, payment method, category, bank_account, transaction_responsible
+   5. The system will allow the user make loan transaction of all data like "create transaction" but adding expiration date for payment.
 
 5. View Dashboard
 6Credit Card register
