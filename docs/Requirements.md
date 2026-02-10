@@ -6,8 +6,7 @@
    3. The system must give a option to make login with email and password.
    4. The system must give a option to the user make login with Google account.
    5. The system have to allow the user change your password with link through the email.
-   <br/>
-2. The system will allow the user create transactions with name, valuer, date, transaction type, payment method.
+## The system will allow the user create transactions with name, valuer, date, transaction type, payment method.
 4. View Transaction
 5. View Dashboard
 6. Credit Card register
