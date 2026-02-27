@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record TransactionModel(
+        Long id,
         String description,
         BigDecimal amount,
         TransactionType type,

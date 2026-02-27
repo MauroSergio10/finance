@@ -5,6 +5,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category extends BaseEntity {
@@ -14,6 +17,13 @@ public class Category extends BaseEntity {
     }
 
     @Getter
-    @Column(name = "categor1y_name", nullable = false, length = 50)
+    @Column(name = "category_name", nullable = false, length = 100)
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    private List<Transaction> transactions = new ArrayList<>();
+
+    public void rename(String name) {
+        this.name = name;
+    }
 }

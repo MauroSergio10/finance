@@ -13,11 +13,16 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Transaction extends BaseEntity {
 
-    public Transaction(String description, BigDecimal amount, TransactionType type, LocalDate date){
+    public Transaction(String description,
+                       BigDecimal amount,
+                       TransactionType type,
+                       LocalDate date,
+                       Category category) {
         this.description = description;
         this.amount = amount;
         this.type = type;
         this.date = date;
+        this.category = category;
     }
 
     @Getter
@@ -25,7 +30,7 @@ public class Transaction extends BaseEntity {
     private String description;
 
     @Getter
-    @Column(nullable = false, precision =  12, scale = 2)
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
@@ -36,4 +41,20 @@ public class Transaction extends BaseEntity {
     @Getter
     private LocalDate date;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    @Getter
+    private Category category;
+
+    public void update(String description,
+                       BigDecimal amount,
+                       TransactionType type,
+                       LocalDate date,
+                       Category category) {
+        this.description = description;
+        this.amount = amount;
+        this.type = type;
+        this.date = date;
+        this.category = category;
+    }
 }
