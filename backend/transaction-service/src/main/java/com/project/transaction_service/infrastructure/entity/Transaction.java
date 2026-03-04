@@ -46,6 +46,11 @@ public class Transaction extends BaseEntity {
     @Getter
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bank_account_id")
+    @Getter
+    private BankAccount bankAccount;
+
     public void update(String description,
                        BigDecimal amount,
                        TransactionType type,

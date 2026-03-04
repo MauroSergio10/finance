@@ -3,15 +3,21 @@ package com.project.transaction_service.infrastructure.config;
 import com.project.transaction_service.application.gateway.CategoryGateway;
 import com.project.transaction_service.application.gateway.TransactionGateway;
 import com.project.transaction_service.application.usecase.category.*;
+import com.project.transaction_service.application.usecase.bankaccount.*;
 import com.project.transaction_service.application.usecase.transaction.TransactionCreate;
 import com.project.transaction_service.application.usecase.transaction.TransactionDelete;
 import com.project.transaction_service.application.usecase.transaction.TransactionUpdate;
+import com.project.transaction_service.application.usecase.transaction.TransactionListAll;
 import com.project.transaction_service.infrastructure.gateways.CategoryRepositoryGateway;
 import com.project.transaction_service.infrastructure.gateways.TransactionRepositoryGateway;
 import com.project.transaction_service.infrastructure.repository.CategoryRepository;
 import com.project.transaction_service.infrastructure.repository.TransactionRepository;
+import com.project.transaction_service.infrastructure.repository.BankAccountRepository;
 import com.project.transaction_service.interfaces.mapper.TransactionDTOMapper;
-import com.project.transaction_service.interfaces.mapper.TransactionEntityMapper;
+import com.project.transaction_service.infrastructure.mapper.TransactionEntityMapper;
+import com.project.transaction_service.infrastructure.gateways.BankAccountRepositoryGateway;
+import com.project.transaction_service.application.gateway.BankAccountGateway;
+import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,9 +36,9 @@ public class SetBeans {
 
     @Bean
     TransactionGateway transactionGateway(TransactionRepository transactionRepository,
-                                          CategoryRepository categoryRepository,
-                                          TransactionEntityMapper transactionEntityMapper) {
-        return new TransactionRepositoryGateway(transactionRepository, categoryRepository, transactionEntityMapper);
+                                          TransactionEntityMapper transactionEntityMapper,
+                                          EntityManager entityManager) {
+        return new TransactionRepositoryGateway(transactionRepository, transactionEntityMapper, entityManager);
     }
 
     @Bean
@@ -50,6 +56,41 @@ public class SetBeans {
     @Bean
     TransactionDelete transactionDelete(TransactionGateway transactionGateway) {
         return new TransactionDelete(transactionGateway);
+    }
+
+    @Bean
+    BankAccountGateway bankAccountGateway(BankAccountRepository bankAccountRepository) {
+        return new BankAccountRepositoryGateway(bankAccountRepository);
+    }
+
+    @Bean
+    BankAccountCreate bankAccountCreate(BankAccountGateway bankAccountGateway) {
+        return new BankAccountCreate(bankAccountGateway);
+    }
+
+    @Bean
+    BankAccountUpdate bankAccountUpdate(BankAccountGateway bankAccountGateway) {
+        return new BankAccountUpdate(bankAccountGateway);
+    }
+
+    @Bean
+    BankAccountDelete bankAccountDelete(BankAccountGateway bankAccountGateway) {
+        return new BankAccountDelete(bankAccountGateway);
+    }
+
+    @Bean
+    BankAccountGetById bankAccountGetById(BankAccountGateway bankAccountGateway) {
+        return new BankAccountGetById(bankAccountGateway);
+    }
+
+    @Bean
+    BankAccountListAll bankAccountListAll(BankAccountGateway bankAccountGateway) {
+        return new BankAccountListAll(bankAccountGateway);
+    }
+
+    @Bean
+    TransactionListAll transactionListAll(TransactionGateway transactionGateway) {
+        return new TransactionListAll(transactionGateway);
     }
 
     @Bean
