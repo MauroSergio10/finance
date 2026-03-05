@@ -1,4 +1,4 @@
-package com.project.transaction_service.infrastructure.config;
+package com.project.transaction_service.Auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,14 +11,14 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Cognito has a custom logout url.
- * See more information <a href="https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html">https://sa-east-1mtp4qafas.auth.sa-east-1.amazoncognito.com"</a>.
+ * See more information <a href="https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html">here</a>.
  */
 public class CognitoLogoutHandler extends SimpleUrlLogoutSuccessHandler {
 
     /**
      * The domain of your user pool.
      */
-    private String domain = "https://sa-east-1mtp4qafas.auth.sa-east-1.amazoncognito.com";
+    private String domain = "https://sa-east-1bucjlokg3.auth.sa-east-1.amazoncognito.com";
 
     /**
      * An allowed callback URL.
@@ -28,7 +28,7 @@ public class CognitoLogoutHandler extends SimpleUrlLogoutSuccessHandler {
     /**
      * The ID of your User Pool Client.
      */
-    private String userPoolClientId = "6q3ccqnr66shn0uifvabm0i105";
+    private String userPoolClientId = "d0tvd3vuspmvvdr0ph22hcp7k";
 
     /**
      * Here, we must implement the new logout URL request. We define what URL to send our request to, and set out client_id and logout_uri parameters.
