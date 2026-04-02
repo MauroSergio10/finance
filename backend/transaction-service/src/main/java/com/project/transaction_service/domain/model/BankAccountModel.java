@@ -6,6 +6,7 @@ public record BankAccountModel(
         Long id,
         String name,
         BigDecimal balance,
-        String description
+        String description,
+        String userId
 ) {}
 

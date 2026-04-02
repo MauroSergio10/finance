@@ -8,5 +8,5 @@ public interface TransactionGateway {
     TransactionModel create(TransactionModel transactionModel);
     TransactionModel update(Long id, TransactionModel transactionModel);
     void delete(Long id);
-    List<TransactionModel> listAll();
+    List<TransactionModel> listAll(String token);
 }

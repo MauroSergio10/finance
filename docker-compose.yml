@@ -1,16 +1,6 @@
 services:
-  transaction-postgres:
-    image: postgres:18
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: mydb
-
-  adminer:
-    image: adminer
-    restart: always
+  transaction-service:
+    build:
+      context: ./backend/transaction-service
     ports:
       - "8080:8080"

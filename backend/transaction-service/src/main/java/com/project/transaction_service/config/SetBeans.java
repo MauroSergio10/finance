@@ -1,4 +1,4 @@
-package com.project.transaction_service.infrastructure.config;
+package com.project.transaction_service.config;
 
 import com.project.transaction_service.application.gateway.CategoryGateway;
 import com.project.transaction_service.application.gateway.TransactionGateway;
@@ -10,6 +10,7 @@ import com.project.transaction_service.application.usecase.transaction.Transacti
 import com.project.transaction_service.application.usecase.transaction.TransactionListAll;
 import com.project.transaction_service.infrastructure.gateways.CategoryRepositoryGateway;
 import com.project.transaction_service.infrastructure.gateways.TransactionRepositoryGateway;
+import com.project.transaction_service.infrastructure.mapper.BankAccountEntityMapper;
 import com.project.transaction_service.infrastructure.repository.CategoryRepository;
 import com.project.transaction_service.infrastructure.repository.TransactionRepository;
 import com.project.transaction_service.infrastructure.repository.BankAccountRepository;
@@ -43,8 +44,8 @@ public class SetBeans {
 
     @Bean
     TransactionCreate transactionCreate(TransactionGateway transactionGateway,
-                                        CategoryGateway categoryGateway) {
-        return new TransactionCreate(transactionGateway, categoryGateway);
+                                        CategoryGetById getById) {
+        return new TransactionCreate(transactionGateway, getById);
     }
 
     @Bean
@@ -59,8 +60,13 @@ public class SetBeans {
     }
 
     @Bean
-    BankAccountGateway bankAccountGateway(BankAccountRepository bankAccountRepository) {
-        return new BankAccountRepositoryGateway(bankAccountRepository);
+    BankAccountEntityMapper bankAccountEntityMapper() {
+        return new BankAccountEntityMapper();
+    }
+
+    @Bean
+    BankAccountGateway bankAccountGateway(BankAccountRepository bankAccountRepository, BankAccountEntityMapper mapper) {
+        return new BankAccountRepositoryGateway(bankAccountRepository, mapper);
     }
 
     @Bean

@@ -12,5 +12,6 @@ public record TransactionRequest(
         @NotNull(message = "Amount can´t be empty") BigDecimal amount,
         @NotNull(message = "Transaction type can´t be empty") TransactionType type,
         @NotNull(message = "Date can´t be empty") LocalDate date,
-        Long categoryId
+        Long categoryId,
+        Long bankAccountID
 ) {}

@@ -1,6 +1,5 @@
 package com.project.transaction_service.domain.dto.transaction;
 
-import com.project.transaction_service.domain.dto.category.CategoryResponse;
 import com.project.transaction_service.domain.model.TransactionType;
 
 import java.math.BigDecimal;
@@ -12,6 +11,7 @@ public record TransactionResponse(
         BigDecimal amount,
         TransactionType type,
         LocalDate date,
-        CategoryResponse category
+        Long categoryId,
+        String categoryName
 ) {
 }

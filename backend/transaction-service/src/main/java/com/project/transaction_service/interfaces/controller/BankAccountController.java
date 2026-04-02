@@ -8,14 +8,19 @@ import com.project.transaction_service.application.usecase.bankaccount.BankAccou
 import com.project.transaction_service.domain.dto.bankaccount.BankAccountRequest;
 import com.project.transaction_service.domain.dto.bankaccount.BankAccountResponse;
 import com.project.transaction_service.domain.model.BankAccountModel;
+import com.project.transaction_service.interfaces.mapper.BankAccountDTOMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.project.transaction_service.interfaces.mapper.BankAccountDTOMapper.toModel;
 
 @RestController
 @RequestMapping("/bank-accounts")
@@ -30,14 +35,18 @@ public class BankAccountController {
 
     @PostMapping
     public ResponseEntity<BankAccountResponse> createBankAccount(
-            @Valid @RequestBody BankAccountRequest request
-    ) {
+            @Valid @RequestBody BankAccountRequest request,
+            @AuthenticationPrincipal Jwt jwt
+            ) {
+
+        String token = jwt.getClaim("sub");
+
         BankAccountModel created = bankAccountCreate.execute(
-                new BankAccountModel(null, request.name(), request.balance(), request.description())
+            BankAccountDTOMapper.toModel(request, token)
         );
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new BankAccountResponse(created.id(), created.name(), created.balance(), created.description()));
+                .body(BankAccountDTOMapper.toResponse(created));
     }
 
     @GetMapping("/{id}")
@@ -59,16 +68,20 @@ public class BankAccountController {
     @PutMapping("/{id}")
     public ResponseEntity<BankAccountResponse> updateBankAccount(
             @PathVariable Long id,
-            @Valid @RequestBody BankAccountRequest request
-    ) {
-        BankAccountModel updated = bankAccountUpdate.execute(
-                id,
-                new BankAccountModel(id, request.name(), request.balance(), request.description())
-        );
+            @Valid @RequestBody BankAccountRequest request,
+            @AuthenticationPrincipal Jwt jwt
 
-        return ResponseEntity.ok(
-                new BankAccountResponse(updated.id(), updated.name(), updated.balance(), updated.description())
-        );
+    ) {
+
+        String token = jwt.getClaim("sub");
+
+        BankAccountModel model = toModel(request, token);
+
+        BankAccountModel updated = bankAccountUpdate.execute(id, model);
+
+        BankAccountResponse response= (BankAccountDTOMapper.toResponse(updated));
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")

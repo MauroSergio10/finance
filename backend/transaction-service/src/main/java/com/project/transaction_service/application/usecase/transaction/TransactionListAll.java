@@ -11,8 +11,8 @@ public class TransactionListAll {
 
     private final TransactionGateway transactionGateway;
 
-    public List<TransactionModel> execute() {
-        return transactionGateway.listAll();
+    public List<TransactionModel> execute(String token) {
+        return transactionGateway.listAll(token);
     }
 }
 

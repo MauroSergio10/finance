@@ -1,13 +1,12 @@
-package com.project.transaction_service.infrastructure.config;
+package com.project.transaction_service.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.project.transaction_service.Auth.CognitoLogoutHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import com.project.transaction_service.Auth.CognitoLogoutHandler;
 
 /**
  * Class to configure AWS Cognito as an OAuth 2.0 authorizer with Spring Security.
@@ -25,7 +24,12 @@ public class SecurityConfiguration {
 
         http.csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**")
+                        .permitAll()
                         .anyRequest()
                         .authenticated())
                 .oauth2Login(Customizer.withDefaults())

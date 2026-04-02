@@ -3,6 +3,7 @@ package com.project.transaction_service.infrastructure.gateways;
 import com.project.transaction_service.application.gateway.BankAccountGateway;
 import com.project.transaction_service.domain.model.BankAccountModel;
 import com.project.transaction_service.infrastructure.entity.BankAccount;
+import com.project.transaction_service.infrastructure.mapper.BankAccountEntityMapper;
 import com.project.transaction_service.infrastructure.repository.BankAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,16 +16,18 @@ import java.util.stream.Collectors;
 public class BankAccountRepositoryGateway implements BankAccountGateway {
 
     private final BankAccountRepository repository;
+    private final BankAccountEntityMapper mapper;
 
     @Override
     public BankAccountModel create(BankAccountModel bankAccountModel) {
         BankAccount bankAccount = new BankAccount(
                 bankAccountModel.name(),
                 bankAccountModel.balance(),
-                bankAccountModel.description()
+                bankAccountModel.description(),
+                bankAccountModel.userId()
         );
         bankAccount = repository.save(bankAccount);
-        return new BankAccountModel(bankAccount.getId(), bankAccount.getName(), bankAccount.getBalance(), bankAccount.getDescription());
+        return mapper.toModel(bankAccount);
     }
 
     @Override
@@ -39,7 +42,7 @@ public class BankAccountRepositoryGateway implements BankAccountGateway {
         );
 
         bankAccount = repository.save(bankAccount);
-        return new BankAccountModel(bankAccount.getId(), bankAccount.getName(), bankAccount.getBalance(), bankAccount.getDescription());
+        return mapper.toModel(bankAccount);
     }
 
     @Override
@@ -51,13 +54,14 @@ public class BankAccountRepositoryGateway implements BankAccountGateway {
     public BankAccountModel getById(Long id) {
         BankAccount bankAccount = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Bank account not found"));
-        return new BankAccountModel(bankAccount.getId(), bankAccount.getName(), bankAccount.getBalance(), bankAccount.getDescription());
+
+        return mapper.toModel(bankAccount);
     }
 
     @Override
     public List<BankAccountModel> listAll() {
         return repository.findAll().stream()
-                .map(b -> new BankAccountModel(b.getId(), b.getName(), b.getBalance(), b.getDescription()))
+                .map(b -> new BankAccountModel(b.getId(), b.getName(), b.getBalance(), b.getDescription(), b.getUserId()))
                 .collect(Collectors.toList());
     }
 }

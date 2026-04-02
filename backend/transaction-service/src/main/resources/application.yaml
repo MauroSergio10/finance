@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/mydb
+    url: jdbc:postgresql://database-2.cxc6g8a60utm.sa-east-1.rds.amazonaws.com:5432/postgres?sslmode=require
     username: postgres
     password: mysecretpassword
     driver-class-name: org.postgresql.Driver
@@ -15,7 +15,7 @@ spring:
         registration:
           cognito:
             client-id: d0tvd3vuspmvvdr0ph22hcp7k
-            client-secret: <client secret>
+            client-secret: 18nn1jd4l3f1gpk6ovpv1okasjvvmqfbvj15kg3v6jmupom7qj6b
             scope:
               - email
               - openid
@@ -23,10 +23,16 @@ spring:
             # Spring Security by default uses a redirect-uri in the format: {baseUrl}/login/oauth2/code/{registrationId}
             # For example: http://localhost:8080/login/oauth2/code/cognito
             # See more: https://docs.spring.io/spring-security/reference/servlet/oauth2/login/core.html#oauth2login-sample-redirect-uri
-            redirect-uri: https://d84l1y8p4kdic.cloudfront.net
+            redirect-uri: "{baseUrl}/login/oauth2/code/cognito"
         provider:
           cognito:
-            issuerUri: https://cognito-idp.sa-east-1.amazonaws.com/sa-east-1_BUCjlOkG3
+            issuer-uri: https://cognito-idp.sa-east-1.amazonaws.com/sa-east-1_BUCjlOkG3
             user-name-attribute: username
+logging:
+  level:
+    org.springframework.security: TRACE
+    org.springframework.web: DEBUG
+
 server:
-  port: 8081
+  port: 8080
+

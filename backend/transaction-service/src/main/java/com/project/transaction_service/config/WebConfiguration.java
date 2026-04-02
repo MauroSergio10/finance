@@ -1,4 +1,4 @@
-package com.project.transaction_service.infrastructure.config;
+package com.project.transaction_service.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

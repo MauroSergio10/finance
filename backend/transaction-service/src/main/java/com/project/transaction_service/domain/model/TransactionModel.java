@@ -9,5 +9,7 @@ public record TransactionModel(
         BigDecimal amount,
         TransactionType type,
         LocalDate date,
-        CategoryModel category
+        Long categoryId,
+        String categoryName,
+        Long bankAccountId
 ) {}

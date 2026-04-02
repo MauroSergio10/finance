@@ -2,6 +2,7 @@ package com.project.transaction_service.infrastructure.gateways;
 
 import com.project.transaction_service.application.gateway.TransactionGateway;
 import com.project.transaction_service.domain.model.TransactionModel;
+import com.project.transaction_service.infrastructure.entity.BankAccount;
 import com.project.transaction_service.infrastructure.entity.Transaction;
 import com.project.transaction_service.infrastructure.repository.TransactionRepository;
 import com.project.transaction_service.infrastructure.mapper.TransactionEntityMapper;
@@ -23,12 +24,24 @@ public class TransactionRepositoryGateway implements TransactionGateway {
 
     @Override
     public TransactionModel create(TransactionModel model){
+
         Category category = null;
-        if (model.category() != null && model.category().id() != null) {
-            category = entityManager.getReference(Category.class, model.category().id());
+
+        BankAccount bankAccount = entityManager.getReference(BankAccount.class, model.bankAccountId());
+
+        if (model.categoryId() != null) {
+            category = entityManager.getReference(Category.class, model.categoryId());
         }
 
-        Transaction transaction = mapper.toEntity(model, category);
+        Transaction transaction = new Transaction(
+                model.description(),
+                model.amount(),
+                model.type(),
+                model.date(),
+                category,
+                bankAccount
+        );
+
         transaction = repository.save(transaction);
         return mapper.toModel(transaction);
     }
@@ -38,19 +51,21 @@ public class TransactionRepositoryGateway implements TransactionGateway {
         Transaction transaction = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
 
+        BankAccount bankAccount = entityManager.getReference(BankAccount.class, model.bankAccountId());
+
         Category category = null;
-        if (model.category() != null && model.category().id() != null) {
-            category = entityManager.getReference(Category.class, model.category().id());
+        if (model.categoryId() != null) {
+            category = entityManager.getReference(Category.class, model.categoryId());
         }
 
-        Transaction updatedData = mapper.toEntity(model, category);
 
         transaction.update(
-                updatedData.getDescription(),
-                updatedData.getAmount(),
-                updatedData.getType(),
-                updatedData.getDate(),
-                updatedData.getCategory()
+                model.description(),
+                model.amount(),
+                model.type(),
+                model.date(),
+                category,
+                bankAccount
         );
 
         transaction = repository.save(transaction);
@@ -64,8 +79,8 @@ public class TransactionRepositoryGateway implements TransactionGateway {
     }
 
     @Override
-    public List<TransactionModel> listAll() {
-        return repository.findAll()
+    public List<TransactionModel> listAll(String token) {
+        return repository.findAllByBankAccountUserId(token)
                 .stream()
                 .map(mapper::toModel)
                 .collect(Collectors.toList());

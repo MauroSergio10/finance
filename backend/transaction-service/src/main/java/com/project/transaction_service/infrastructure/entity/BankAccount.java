@@ -15,10 +15,12 @@ public class BankAccount extends BaseEntity {
 
     public BankAccount(String name,
                        BigDecimal balance,
-                       String description) {
+                       String description,
+                       String userId) {
         this.name = name;
         this.balance = balance;
         this.description = description;
+        this.userId = userId;
     }
 
     @Getter
@@ -32,6 +34,10 @@ public class BankAccount extends BaseEntity {
     @Getter
     @Column(nullable = false, length = 255)
     private String description;
+
+    @Getter
+    @Column(nullable = false, length = 700)
+    private String userId;
 
     @OneToMany(mappedBy = "bankAccount")
     private List<Transaction> transactions = new ArrayList<>();

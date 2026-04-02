@@ -1,9 +1,10 @@
 package com.project.transaction_service.application.usecase.transaction;
 
-import com.project.transaction_service.application.gateway.CategoryGateway;
 import com.project.transaction_service.application.gateway.TransactionGateway;
+import com.project.transaction_service.application.usecase.category.CategoryGetById;
 import com.project.transaction_service.domain.model.CategoryModel;
 import com.project.transaction_service.domain.model.TransactionModel;
+import com.project.transaction_service.domain.model.TransactionWithCategoryModel;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
@@ -11,44 +12,25 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class TransactionCreate {
 
-    private final TransactionGateway transactionGateway;
-    private final CategoryGateway categoryGateway;
+    private final TransactionGateway gateway;
+    private final CategoryGetById getCategory;
 
-    public TransactionModel execute(TransactionModel model) {
+    public TransactionWithCategoryModel execute(TransactionModel model) {
 
         if (model.amount().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Amount must be greater than zero");
         }
 
-        TransactionModel validatedModel = attachExistingCategory(model);
+        CategoryModel category = null;
 
-        return transactionGateway.create(validatedModel);
-    }
-
-    private TransactionModel attachExistingCategory(TransactionModel model) {
-        if (model.category() == null || model.category().id() == null) {
-            // categoria opcional: não informar categoryId permite salvar sem categoria
-            return new TransactionModel(
-                    model.id(),
-                    model.description(),
-                    model.amount(),
-                    model.type(),
-                    model.date(),
-                    null
-            );
+        if(model.categoryId() != null){
+            category = getCategory.execute(model.categoryId());
         }
 
-        // valida a existência da categoria via gateway de domínio (sem conhecer repository)
-        CategoryModel existingCategory = categoryGateway.getById(model.category().id());
+        TransactionModel modelCreate = gateway.create(model);
 
-        return new TransactionModel(
-                model.id(),
-                model.description(),
-                model.amount(),
-                model.type(),
-                model.date(),
-                existingCategory
-        );
+        return new TransactionWithCategoryModel(modelCreate, category);
     }
+
 }
 

@@ -17,12 +17,15 @@ public class Transaction extends BaseEntity {
                        BigDecimal amount,
                        TransactionType type,
                        LocalDate date,
-                       Category category) {
+                       Category category,
+                       BankAccount bankAccountId
+                       ) {
         this.description = description;
         this.amount = amount;
         this.type = type;
         this.date = date;
         this.category = category;
+        this.bankAccount = bankAccountId;
     }
 
     @Getter
@@ -55,11 +58,13 @@ public class Transaction extends BaseEntity {
                        BigDecimal amount,
                        TransactionType type,
                        LocalDate date,
-                       Category category) {
+                       Category category,
+                       BankAccount bankAccount) {
         this.description = description;
         this.amount = amount;
         this.type = type;
         this.date = date;
         this.category = category;
+        this.bankAccount = bankAccount;
     }
 }
