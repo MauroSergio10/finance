@@ -26,8 +26,8 @@ jobs:
 
       - name: Build da imagem
         run: |
-          docker build -t Dockerfile ./backend/transaction-service 
-          docker tag Dockerfile:latest 854929212314.dkr.ecr.sa-east-1.amazonaws.com/transaction-service:latest
+          docker build -t dockerfile ./backend/transaction-service 
+          docker tag dockerfile:latest 854929212314.dkr.ecr.sa-east-1.amazonaws.com/transaction-service:latest
           
       - name: Push da imagem
         run: |
