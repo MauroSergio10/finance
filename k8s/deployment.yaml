@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transaction-app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: transaction-app
+  template:
+    metadata:
+      labels:
+        app: transaction-app
+    spec:
+      containers:
+        - name: transaction-app
+          image: 854929212314.dkr.ecr.sa-east-1.amazonaws.com/transaction-service:latest
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+              httpGet:
+                path: /actuator/health
+                port: 8080
+              initialDelaySeconds: 10
+              periodSeconds: 10
+      imagePulSecrets:
+        -name:ecr-secrets
