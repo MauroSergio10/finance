@@ -43,5 +43,11 @@ jobs:
       - name: Instalar kubectl
         uses: azure/setup-kubectl@v3
 
+      - name: Start Minikube
+        uses: medyagh/setup-minikube@latest
+
+      - name: Verificar cluster
+        run: kubectl get nodes
+
       - name: Deploy no Kubernetes
         run: kubectl apply -f k8s/
