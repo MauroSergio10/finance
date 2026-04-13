@@ -14,14 +14,25 @@ spec:
     spec:
       containers:
         - name: transaction-app
-          image: 854929212314.dkr.ecr.sa-east-1.amazonaws.com/transaction-service:latest
+          image: maurosergioc/finance:1.0
           ports:
             - containerPort: 8080
           livenessProbe:
-              httpGet:
-                path: /actuator/health
-                port: 8080
-              initialDelaySeconds: 10
-              periodSeconds: 10
-      imagePulSecrets:
-        -name:ecr-secrets
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "200m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
