@@ -20,6 +20,7 @@ jobs:
           java-version: '17'
 
       - name: Build com Maven
+        working-directory: backend/transaction-service
         run: mvn clean package -DskipTests
 
       - name: Login no Docker Hub
@@ -29,10 +30,18 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build da imagem Docker
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/transaction-app:latest .
+        working-directory: backend/transaction-service
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/transaction-app:${{ github.sha }} .
+          docker tag ${{ secrets.DOCKER_USERNAME }}/transaction-app:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/transaction-app:latest
 
       - name: Push da imagem
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/transaction-app:latest
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/transaction-app:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/transaction-app:latest
+
+      - name: Instalar kubectl
+        uses: azure/setup-kubectl@v3
 
       - name: Deploy no Kubernetes
         run: kubectl apply -f k8s/
